@@ -559,7 +559,6 @@ int main(int argc, char *argv)
     printMap(map,J2);
 
        // IA Attaque
-
         while(bateauJ1!=0 && bateauJ2!=0)  //Boucle jusqu'à ce que l'un des 2 joueur n'as plus de bateau en vie
             //Je ne comprend pas pourquoi il faut un "ET" ici... et non un "OU"...
         {
@@ -617,6 +616,7 @@ int main(int argc, char *argv)
         printf("# Nombre de morceaux(x) du joueur 2 intact %d  #\n", bateauJ2);
         printf("#                                             #\n");
         printf("###############################################\n");
+
         if(bateauJ1==0)
         {
             printf("###############################################\n");
@@ -663,7 +663,6 @@ int main(int argc, char *argv)
     bateauJ1=bateauJ1+4;
 
         //pour joueur 2 IA
-
     bateau1(map,J2);
     bateauJ2=bateauJ2+1;
 
@@ -681,14 +680,12 @@ int main(int argc, char *argv)
     bateauJ2=bateauJ2+4;
 
                 //Carte joueur 1 avec bateaux
-
     printMap(map,J1);
 
                  //Carte joueur 2 avec bateaux
     printMap(map,J2);
 
        // IA Attaque
-
         while(bateauJ1!=0 && bateauJ2!=0)  //Boucle jusqu'à ce que l'un des 2 joueur n'as plus de bateau en vie
         {   //filerWrite();
 
