@@ -48,7 +48,7 @@ int doRand(int startVal, int endVal){
             return (rand() % ((endVal + startVal -1)) + startVal);
         }
     }
-void bateau1(int map[XM][YM][3],int joueur){
+void bateau1(int map[XM][YM][3], int joueur, int vie[2][4]){
     int x, y;
     do{
         do
@@ -67,8 +67,9 @@ void bateau1(int map[XM][YM][3],int joueur){
         while(map[x][y][joueur]!=0 && map[x][y][joueur]!=1);
     }
     while(map[x][y][joueur]!=0 && map[x][y][joueur]!=1);
+    vie[joueur][0] = vie[joueur][0]+1;
 }
-void bateau2(int map[XM][YM][3],int joueur){
+void bateau2(int map[XM][YM][3], int joueur, int vie[2][4]){
     int x, y, rdmPos;
 
     do
@@ -110,8 +111,9 @@ void bateau2(int map[XM][YM][3],int joueur){
         while(map[x][y][joueur]==0 && map[x][y][joueur]!=2);
     }
     while(map[x][y][joueur]!=2);
+    vie[joueur][1] = vie[joueur][1]+2;
 }
-void bateau3(int map[XM][YM][3],int joueur){
+void bateau3(int map[XM][YM][3], int joueur, int vie[2][4]){
     int x,y, rdmPos;
 
     do
@@ -156,8 +158,9 @@ void bateau3(int map[XM][YM][3],int joueur){
         while( map[x][y][joueur]==0 && map[x][y][joueur]!=3);
     }
     while(map[x][y][joueur]==0 && map[x][y][joueur]!=3);
+    vie[joueur][2] = vie[joueur][2]+3;
 }
-void bateau4(int map[XM][YM][3],int joueur){
+void bateau4(int map[XM][YM][3], int joueur, int vie[2][4]){
 
     int x,y,rdmPos;
 
@@ -208,8 +211,9 @@ void bateau4(int map[XM][YM][3],int joueur){
         while(map[x][y][joueur]==0 && map[x][y][joueur]!=4);
     }
     while(map[x][y][joueur]==0 && map[x][y][joueur]!=4);
+    vie[joueur][3] = vie[joueur][3]+4;
 }
-void bateau1Real(int map[XM][YM][3],int joueur){
+void bateau1Real(int map[XM][YM][3],int joueur, int vie[2][4]){
     int x, y;
 
     do
@@ -225,8 +229,9 @@ void bateau1Real(int map[XM][YM][3],int joueur){
     while(map[x][y][joueur]!=0);
 
     map[x][y][joueur]=1;
+    vie[joueur][0] = vie[joueur][0]+1;
 }
-void bateau2Real(int map[XM][YM][3],int joueur){
+void bateau2Real(int map[XM][YM][3],int joueur, int vie[2][4]){
     int x, y, rdmPos;
 
     do
@@ -289,8 +294,9 @@ void bateau2Real(int map[XM][YM][3],int joueur){
     {
         printf("votre bateau 2 a ete placer en position x:%d y:%d et x:%d y:%d", x, y, x, y-1);
     }
+    vie[joueur][1] = vie[joueur][1]+2;
 }
-void bateau3Real(int map[XM][YM][3],int joueur){
+void bateau3Real(int map[XM][YM][3],int joueur, int vie[2][4]){
     int x, y, rdmPos;
     do
     {
@@ -357,8 +363,9 @@ void bateau3Real(int map[XM][YM][3],int joueur){
     {
         printf("\nvotre bateau 3 a ete placer en position x:%d y:%d et x:%d y:%d et x:%d y:%d", x, y, x, y-1, x, y-2);
     }
+    vie[joueur][2] = vie[joueur][2]+3;
 }
-void bateau4Real(int map[XM][YM][3],int joueur){
+void bateau4Real(int map[XM][YM][3],int joueur, int vie[2][4]){
     int x, y, rdmPos;
     do
     {
@@ -429,8 +436,18 @@ void bateau4Real(int map[XM][YM][3],int joueur){
     {
         printf("\nvotre bateau 4 a ete placer en position x:%d y:%d et x:%d y:%d, x:%d y:%d et x:%d y:%d", x, y, x, y-1, x, y-2, x, y-3);
     }
+    vie[joueur][3] = vie[joueur][3]+4;
 }
-
+void pointVie(int vie[2][4]){
+    printf("Nombre de morceau(x) du joueur 1 du bateau 1 intact: %d\n", vie[J1][0]);
+    printf("Du bateau 2 intact: %d\n", vie[J1][1]);
+    printf("Du bateau 3 intact: %d\n", vie[J1][2]);
+    printf("Du bateau 4 intact: %d\n", vie[J1][3]);
+    printf("Nombre de morceau(x) du joueur 2 du bateau 1 intact: %d\n", vie[J2][0]);
+    printf("Du bateau 2 intact: %d\n", vie[J2][1]);
+    printf("Du bateau 3 intact: %d\n", vie[J2][2]);
+    printf("Du bateau 4 intact: %d\n", vie[J2][3]);
+}
 void write(int map[XM][YM][3]){
     FILE* ftp = fopen("./test2.txt","w+");
     int i, j;
@@ -479,10 +496,8 @@ int main(int argc, char *argv)
     int attaquexJ2=0;
     int attaqueyJ2=0;
 
-    int bateauJ1=0; //Vie joueur 1
-    int bateauJ2=0; //Vie joueur 2
-
     int map[XM][YM][3]={0};
+    int vie[2][4]={0};
 
     int mode=0;
 
@@ -517,52 +532,40 @@ int main(int argc, char *argv)
 
     printf("En cour de placement pour le joueur 1\n");
 
-    bateau1(map,J1);
-    bateauJ1=bateauJ1+1;
+    bateau1(map,J1,vie);
 
-    bateau2(map,J1);
-    bateauJ1=bateauJ1+2;
+    bateau2(map,J1,vie);
 
-    bateau3(map,J1);
-    bateauJ1=bateauJ1+3;
-    bateau3(map,J1);
-    bateauJ1=bateauJ1+3;
+    bateau3(map,J1,vie);
+    bateau3(map,J1,vie);
 
-    bateau4(map,J1);
-    bateauJ1=bateauJ1+4;
-    bateau4(map,J1);
-    bateauJ1=bateauJ1+4;
+    bateau4(map,J1,vie);
+    bateau4(map,J1,vie);
 
         //pour joueur 2
 
     printf("En cour de placement pour le joueur 2\n");
 
-    bateau1(map,J2);
-    bateauJ2=bateauJ2+1;
+    bateau1(map,J2,vie);
 
-    bateau2(map,J2);
-    bateauJ2=bateauJ2+2;
+    bateau2(map,J2,vie);
 
-    bateau3(map,J2);
-    bateauJ2=bateauJ2+3;
-    bateau3(map,J2);
-    bateauJ2=bateauJ2+3;
+    bateau3(map,J2,vie);
+    bateau3(map,J2,vie);
 
-    bateau4(map,J2);
-    bateauJ2=bateauJ2+4;
-    bateau4(map,J2);
-    bateauJ2=bateauJ2+4;
+    bateau4(map,J2,vie);
+    bateau4(map,J2,vie);
 
                 //Carte joueur 1 avec bateaux
     printMap(map,J1);
                  //Carte joueur 2 avec bateaux
     printMap(map,J2);
 
-       // IA Attaque
-        while(bateauJ1!=0 && bateauJ2!=0)  //Boucle jusqu'à ce que l'un des 2 joueur n'as plus de bateau en vie
+// IA Attaque
+        while((vie[J1][0]!=0 || vie[J1][1]!=0 || vie[J1][2]!=0 || vie[J2][3]!=0) && (vie[J2][0]!=0 || vie[J2][1]!=0 || vie[J2][2]!=0 || vie[J2][3]!=0))  //Boucle jusqu'à ce que l'un des 2 joueur n'as plus de bateau en vie
             //Je ne comprend pas pourquoi il faut un "ET" ici... et non un "OU"...
         {
-            //Attaque du joueur 2 sur la carte du joueur 1 (c'est la carte map[i][j][1])
+//Attaque du joueur 2 sur la carte du joueur 1 (c'est la carte map[i][j][1])
             do
             {
                 attaquexJ2 = doRand(0,XM+1);
@@ -570,21 +573,39 @@ int main(int argc, char *argv)
             }
             while(map[attaquexJ2][attaqueyJ2][J1]==6 || map[attaquexJ2][attaqueyJ2][J1]==9);  // Boucle pour éviter de tirer plusieur fois au même endroit.
 
-            if(map[attaquexJ2][attaqueyJ2][J1]==1 || map[attaquexJ2][attaqueyJ2][J1]==2 || map[attaquexJ2][attaqueyJ2][J1]==3 || map[attaquexJ2][attaqueyJ2][J1]==4)
+            if(map[attaquexJ2][attaqueyJ2][J1]==1)
             {
+                vie[J1][0]=vie[J1][0]-1;
                 map[attaquexJ2][attaqueyJ2][J1]=9;
-                printf("\n");
                 printf("attaque du joueur 2 reussi en x:%d y:%d\n", attaquexJ2, attaqueyJ2);
-                bateauJ1=bateauJ1-1;
-                printf("Nombre de morceau(x) du joueur 1 intact %d\n", bateauJ1);
-                printf("Nombre de morceaux(x) du joueur 2 intact %d\n", bateauJ2);
-
+                pointVie(vie);
+            }
+            else if(map[attaquexJ2][attaqueyJ2][J1]==2)
+            {
+                vie[J1][1]=vie[J1][1]-1;
+                map[attaquexJ2][attaqueyJ2][J1]=9;
+                printf("attaque du joueur 2 reussi en x:%d y:%d\n", attaquexJ2, attaqueyJ2);
+                pointVie(vie);
+            }
+            else if(map[attaquexJ2][attaqueyJ2][J1]==3)
+            {
+                vie[J1][2]=vie[J1][2]-1;
+                map[attaquexJ2][attaqueyJ2][J1]=9;
+                printf("attaque du joueur 2 reussi en x:%d y:%d\n", attaquexJ2, attaqueyJ2);
+                pointVie(vie);
+            }
+            else if(map[attaquexJ2][attaqueyJ2][J1]==4)
+            {
+                vie[J1][3]=vie[J1][3]-1;
+                map[attaquexJ2][attaqueyJ2][J1]=9;
+                printf("attaque du joueur 2 reussi en x:%d y:%d\n", attaquexJ2, attaqueyJ2);
+                pointVie(vie);
             }
             else if (map[attaquexJ2][attaqueyJ2][J1]==0)
             {
                 map[attaquexJ2][attaqueyJ2][J1]=6;
             }
-                //Attaque du joueur 1 sur la carte du joueur 2 (c'est la carte map[a][a][0])
+//Attaque du joueur 1 sur la carte du joueur 2 (c'est la carte map[a][a][0])
             do
             {
                 attaquexJ1 = doRand(0,XM+1);
@@ -592,32 +613,60 @@ int main(int argc, char *argv)
             }
             while(map[attaquexJ1][attaqueyJ1][J2]==6 || map[attaquexJ1][attaqueyJ1][J2]==9); // Boucle pour éviter de tirer plusieur fois au même endroit.
 
-            if(map[attaquexJ1][attaqueyJ1][J2]==1 || map[attaquexJ1][attaqueyJ1][J2]==2 || map[attaquexJ1][attaqueyJ1][J2]==3 || map[attaquexJ1][attaqueyJ1][J2]==4)
+
+            if(map[attaquexJ1][attaqueyJ1][J2]==1)
             {
+                vie[J2][0]=vie[J2][0]-1;
                 map[attaquexJ1][attaqueyJ1][J2]=9;
-                printf("\n");
-                printf("attaque du joueur 1 reussi en x:%d y:%d\n", attaquexJ1, attaqueyJ1);
-                bateauJ2=bateauJ2-1;
-                printf("Nombre de morceau(x) du joueur 1 intact %d\n", bateauJ1);
-                printf("Nombre de morceaux(x) du joueur 2 intact %d\n", bateauJ2);
+                printf("attaque du joueur 2 reussi en x:%d y:%d\n", attaquexJ2, attaqueyJ2);
+                pointVie(vie);
             }
+            else if(map[attaquexJ1][attaqueyJ1][J2]==2)
+            {
+                vie[J2][1]=vie[J2][1]-1;
+                map[attaquexJ1][attaqueyJ1][J2]=9;
+                printf("attaque du joueur 2 reussi en x:%d y:%d\n", attaquexJ2, attaqueyJ2);
+                pointVie(vie);
+            }
+            else if(map[attaquexJ1][attaqueyJ1][J2]==3)
+            {
+                vie[J2][2]=vie[J2][2]-1;
+                map[attaquexJ1][attaqueyJ1][J2]=9;
+                printf("attaque du joueur 2 reussi en x:%d y:%d\n", attaquexJ2, attaqueyJ2);
+                pointVie(vie);
+            }
+            else if(map[attaquexJ1][attaqueyJ1][J2]==4)
+            {
+                vie[J2][3]=vie[J2][3]-1;
+                map[attaquexJ1][attaqueyJ1][J2]=9;
+                printf("attaque du joueur 2 reussi en x:%d y:%d\n", attaquexJ2, attaqueyJ2);
+                pointVie(vie);
+            }
+
             else if (map[attaquexJ1][attaqueyJ1][J2]==0)
             {
                 map[attaquexJ1][attaqueyJ1][J2]=6;
             }
         }
-        write(map);
+        //write(map);
         printMap(map,J1);
         printMap(map,J2);
 
-        printf("###############################################\n");
-        printf("#                                             #\n");
-        printf("# Nombre de morceau(x) du joueur 1 intact %d   #\n", bateauJ1);
-        printf("# Nombre de morceaux(x) du joueur 2 intact %d  #\n", bateauJ2);
-        printf("#                                             #\n");
-        printf("###############################################\n");
+        printf("#############################################################\n");
+        printf("#                                                           #\n");
+        printf("#  Nombre de morceau(x) du joueur 1 du bateau 1 intact: %d   #\n", vie[J1][0]);
+        printf("#  Du bateau 2 intact: %d                                    #\n", vie[J1][1]);
+        printf("#  Du bateau 3 intact: %d                                    #\n", vie[J1][2]);
+        printf("#  Du bateau 4 intact: %d                                    #\n", vie[J1][3]);
+        printf("#                                                           #\n");
+        printf("#  Nombre de morceau(x) du joueur 2 du bateau 1 intact: %d   #\n", vie[J2][0]);
+        printf("#  Du bateau 2 intact: %d                                    #\n", vie[J2][1]);
+        printf("#  Du bateau 3 intact: %d                                    #\n", vie[J2][2]);
+        printf("#  Du bateau 4 intact: %d                                    #\n", vie[J2][3]);
+        printf("#                                                           #\n");
+        printf("#############################################################\n");
 
-        if(bateauJ1==0)
+        if(vie[J1][0]==0&& vie[J1][1]==0 && vie[J1][2]==0 && vie[J1][3]==0)
         {
             printf("###############################################\n");
             printf("#                                             #\n");
@@ -625,7 +674,7 @@ int main(int argc, char *argv)
             printf("#                                             #\n");
             printf("###############################################\n");
         }
-        else if(bateauJ2==0)
+        else if(vie[J2][0]==0&& vie[J2][1]==0 && vie[J2][2]==0 && vie[J2][3]==0)
         {
             printf("###############################################\n");
             printf("#                                             #\n");
@@ -633,63 +682,50 @@ int main(int argc, char *argv)
             printf("#                                             #\n");
             printf("###############################################\n");
         }
-        break;
+    break;
 
         case 2:
             printf("Bienvenue dans le mode Joueur contre IA\n");
 
             initMap(map);
+//positionement des bateaux
 
-    //positionement des bateaux
-
-        //pour joueur 1
+//pour joueur 1
     printMap(map,J1);
     printMap(map,J2);
 
-    bateau1Real(map, J1);
-    bateauJ1=bateauJ1+1;
+    bateau1Real(map,J1,vie);
 
-    bateau2Real(map, J1);
-    bateauJ1=bateauJ1+2;
+    bateau2Real(map,J1,vie);
 
-    bateau3Real(map, J1);
-    bateauJ1=bateauJ1+3;
-    bateau3Real(map, J1);
-    bateauJ1=bateauJ1+3;
+    bateau3Real(map,J1,vie);
+    bateau3Real(map,J1,vie);
 
-    bateau4Real(map, J1);
-    bateauJ1=bateauJ1+4;
-    bateau4Real(map, J1);
-    bateauJ1=bateauJ1+4;
+    bateau4Real(map,J1,vie);
+    bateau4Real(map,J1,vie);
 
         //pour joueur 2 IA
-    bateau1(map,J2);
-    bateauJ2=bateauJ2+1;
+    bateau1Real(map,J2,vie);
 
-    bateau2(map,J2);
-    bateauJ2=bateauJ2+2;
+    bateau2Real(map,J2,vie);
 
-    bateau3(map,J2);
-    bateauJ2=bateauJ2+3;
-    bateau3(map,J2);
-    bateauJ2=bateauJ2+3;
+    bateau3Real(map,J2,vie);
+    bateau3Real(map,J2,vie);
 
-    bateau4(map,J2);
-    bateauJ2=bateauJ2+4;
-    bateau4(map,J2);
-    bateauJ2=bateauJ2+4;
+    bateau4Real(map,J2,vie);
+    bateau4Real(map,J2,vie);
 
-                //Carte joueur 1 avec bateaux
+//Carte joueur 1 avec bateaux
     printMap(map,J1);
 
-                 //Carte joueur 2 avec bateaux
+//Carte joueur 2 avec bateaux
     printMap(map,J2);
 
-       // IA Attaque
-        while(bateauJ1!=0 && bateauJ2!=0)  //Boucle jusqu'à ce que l'un des 2 joueur n'as plus de bateau en vie
+// IA Attaque
+        while((vie[J1][0]!=0 || vie[J1][1]!=0 || vie[J1][2]!=0 || vie[J2][3]!=0) && (vie[J2][0]!=0 || vie[J2][1]!=0 || vie[J2][2]!=0 || vie[J2][3]!=0))  //Boucle jusqu'à ce que l'un des 2 joueur n'as plus de bateau en vie
         {   //filerWrite();
 
-            //Attaque du joueur 2 (L'IA) sur la carte du joueur 1 (c'est la carte map[i][j][1])
+//Attaque du joueur 2 (L'IA) sur la carte du joueur 1 (c'est la carte map[i][j][1])
             do
             {
                 attaquexJ2 = doRand(0,XM+1);
@@ -697,20 +733,40 @@ int main(int argc, char *argv)
             }
             while(map[attaquexJ2][attaqueyJ2][J1]==6 || map[attaquexJ2][attaqueyJ2][J1]==9);  // Boucle pour éviter de tirer plusieur fois au même endroit.
 
-            if(map[attaquexJ2][attaqueyJ2][J1]==1 || map[attaquexJ2][attaqueyJ2][J1]==2 || map[attaquexJ2][attaqueyJ2][J1]==3 || map[attaquexJ2][attaqueyJ2][J1]==4)
+            if(map[attaquexJ2][attaqueyJ2][J1]==1)
             {
+                vie[J1][0]=vie[J1][0]-1;
                 map[attaquexJ2][attaqueyJ2][J1]=9;
-                printf("\n");
                 printf("attaque du joueur 2 reussi en x:%d y:%d\n", attaquexJ2, attaqueyJ2);
-                bateauJ1=bateauJ1-1;
-                printf("Nombre de morceau(x) du joueur 1 intact %d\n", bateauJ1);
-                printf("Nombre de morceaux(x) du joueur 2 intact %d\n", bateauJ2);
+                pointVie(vie);
+            }
+            else if(map[attaquexJ2][attaqueyJ2][J1]==2)
+            {
+                vie[J1][1]=vie[J1][1]-1;
+                map[attaquexJ2][attaqueyJ2][J1]=9;
+                printf("attaque du joueur 2 reussi en x:%d y:%d\n", attaquexJ2, attaqueyJ2);
+                pointVie(vie);
+            }
+            else if(map[attaquexJ2][attaqueyJ2][J1]==3)
+            {
+                vie[J1][2]=vie[J1][2]-1;
+                map[attaquexJ2][attaqueyJ2][J1]=9;
+                printf("attaque du joueur 2 reussi en x:%d y:%d\n", attaquexJ2, attaqueyJ2);
+                pointVie(vie);
+            }
+            else if(map[attaquexJ2][attaqueyJ2][J1]==4)
+            {
+                vie[J1][3]=vie[J1][3]-1;
+                map[attaquexJ2][attaqueyJ2][J1]=9;
+                printf("attaque du joueur 2 reussi en x:%d y:%d\n", attaquexJ2, attaqueyJ2);
+                pointVie(vie);
             }
             else if (map[attaquexJ2][attaqueyJ2][J1]==0)
             {
                 map[attaquexJ2][attaqueyJ2][J1]=6;
             }
-                //Attaque du joueur 1 sur la carte du joueur 2 (L'IA)(c'est la carte map[a][a][0])
+
+//Attaque du joueur 1 sur la carte du joueur 2 (L'IA)(c'est la carte map[a][a][0])
             do
             {
                 printf("Carte de votre ennemi:\n");
@@ -732,16 +788,36 @@ int main(int argc, char *argv)
             }
             while(map[attaquexJ1][attaqueyJ1][IAVSJ]==6 || map[attaquexJ1][attaqueyJ1][IAVSJ]==9); // Boucle pour éviter de tirer plusieur fois au même endroit.
 
-            if(map[attaquexJ1][attaqueyJ1][J2]==1 || map[attaquexJ1][attaqueyJ1][J2]==2 || map[attaquexJ1][attaqueyJ1][J2]==3 || map[attaquexJ1][attaqueyJ1][J2]==4)
+            if(map[attaquexJ1][attaqueyJ1][IAVSJ]==1)
             {
+                vie[J2][0]=vie[J2][0]-1;
                 map[attaquexJ1][attaqueyJ1][IAVSJ]=9;
-                printf("\n");
-                printf("attaque du joueur 1 reussi en x:%d y:%d\n", attaquexJ1, attaqueyJ1);
-                bateauJ2=bateauJ2-1;
-                printf("Nombre de morceau(x) du joueur 1 intact %d\n", bateauJ1);
-                printf("Nombre de morceaux(x) du joueur 2 intact %d\n", bateauJ2);
+                printf("attaque du joueur 2 reussi en x:%d y:%d\n", attaquexJ2, attaqueyJ2);
+                pointVie(vie);
             }
-            else if (map[attaquexJ1][attaqueyJ1][J2]==0)
+            else if(map[attaquexJ1][attaqueyJ1][IAVSJ]==2)
+            {
+                vie[J2][1]=vie[J2][1]-1;
+                map[attaquexJ1][attaqueyJ1][IAVSJ]=9;
+                printf("attaque du joueur 2 reussi en x:%d y:%d\n", attaquexJ2, attaqueyJ2);
+                pointVie(vie);
+            }
+            else if(map[attaquexJ1][attaqueyJ1][IAVSJ]==3)
+            {
+                vie[J2][2]=vie[J2][2]-1;
+                map[attaquexJ1][attaqueyJ1][IAVSJ]=9;
+                printf("attaque du joueur 2 reussi en x:%d y:%d\n", attaquexJ2, attaqueyJ2);
+                pointVie(vie);
+            }
+            else if(map[attaquexJ1][attaqueyJ1][IAVSJ]==4)
+            {
+                vie[J2][3]=vie[J2][3]-1;
+                map[attaquexJ1][attaqueyJ1][IAVSJ]=9;
+                printf("attaque du joueur 2 reussi en x:%d y:%d\n", attaquexJ2, attaqueyJ2);
+                pointVie(vie);
+            }
+
+            else if (map[attaquexJ1][attaqueyJ1][IAVSJ]==0)
             {
                 map[attaquexJ1][attaqueyJ1][IAVSJ]=6;
             }
@@ -750,13 +826,21 @@ int main(int argc, char *argv)
         printMap(map,J1);
         printMap(map,IAVSJ);
 
-        printf("###############################################\n");
-        printf("#                                             #\n");
-        printf("# Nombre de morceau(x) du joueur 1 intact %d   #\n", bateauJ1);
-        printf("# Nombre de morceaux(x) du joueur 2 intact %d  #\n", bateauJ2);
-        printf("#                                             #\n");
-        printf("###############################################\n");
-        if(bateauJ1==0)
+        printf("#############################################################\n");
+        printf("#                                                           #\n");
+        printf("#  Nombre de morceau(x) du joueur 1 du bateau 1 intact: %d   #\n", vie[J1][0]);
+        printf("#  Du bateau 2 intact: %d                                    #\n", vie[J1][1]);
+        printf("#  Du bateau 3 intact: %d                                    #\n", vie[J1][2]);
+        printf("#  Du bateau 4 intact: %d                                    #\n", vie[J1][3]);
+        printf("#                                                           #\n");
+        printf("#  Nombre de morceau(x) du joueur 2 du bateau 1 intact: %d   #\n", vie[J2][0]);
+        printf("#  Du bateau 2 intact: %d                                    #\n", vie[J2][1]);
+        printf("#  Du bateau 3 intact: %d                                    #\n", vie[J2][2]);
+        printf("#  Du bateau 4 intact: %d                                    #\n", vie[J2][3]);
+        printf("#                                                           #\n");
+        printf("#############################################################\n");
+
+        if(vie[J1][0]==0&& vie[J1][1]==0 && vie[J1][2]==0 && vie[J1][3]==0)
         {
             printf("###############################################\n");
             printf("#                                             #\n");
@@ -764,7 +848,7 @@ int main(int argc, char *argv)
             printf("#                                             #\n");
             printf("###############################################\n");
         }
-        else if(bateauJ2==0)
+        else if(vie[J2][0]==0&& vie[J2][1]==0 && vie[J2][2]==0 && vie[J2][3]==0)
         {
             printf("###############################################\n");
             printf("#                                             #\n");
