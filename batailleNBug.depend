@@ -1,6 +1,7 @@
 # depslib dependency file v1.0
-1476711305 source:c:\users\fabie\documents\codeblockproject\bataillenbug\main.c
+1477578560 source:c:\users\fabie\documents\codeblockproject\bataillenbug\main.c
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
+	<ctype.h>
 
